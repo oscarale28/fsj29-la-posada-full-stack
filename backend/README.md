@@ -1,173 +1,122 @@
-# 🏨 Accommodation Management System API
+# 🏨 Sistema de Gestión de Alojamientos 'La Posada' - API Backend
 
-A comprehensive REST API for managing accommodations and user accounts, built with PHP and featuring interactive Swagger UI documentation.
+Una API REST completa para la gestión de alojamientos y cuentas de usuario, construida con PHP y con documentación interactiva Swagger UI.
 
-## 🚀 Quick Start with Docker
+## 🏛️ Arquitectura del Sistema
 
-### Prerequisites
-- Docker
-- Docker Compose
-- Existing database (configured in .env)
+### Implementación de Screaming Architecture
 
-### Development Setup
+Este proyecto implementa **Screaming Architecture**, donde la estructura del código refleja claramente el dominio del negocio. La organización por módulos de dominio hace que el propósito de la aplicación sea evidente desde la estructura de carpetas:
 
-1. **Navigate to backend directory**
+```
+src/
+├── AccommodationManagement/    # 🏨 Gestión de Alojamientos (Dominio Principal)
+│   ├── Entities/              # Entidades del dominio
+│   ├── Controllers/           # Controladores HTTP
+│   ├── Services/              # Lógica de negocio
+│   └── Repositories/          # Acceso a datos
+├── UserManagement/            # 👥 Gestión de Usuarios
+├── Authentication/            # 🔐 Autenticación y Autorización
+└── Shared/                    # 🔧 Componentes compartidos
+    ├── Http/                  # Router, Middleware
+    ├── Security/              # JWT, Hashing
+    └── Database/              # Conexión y utilidades
+```
+
+### Funcionalidades Principales de la API
+
+#### 🏨 Gestión de Alojamientos
+- **Búsqueda y filtrado** de alojamientos por ubicación, precio y amenidades
+- **Creación de alojamientos** (solo administradores)
+- **Visualización pública** de catálogo de alojamientos
+- **Gestión de amenidades** dinámicas por alojamiento
+
+#### 👥 Gestión de Usuarios
+- **Registro y autenticación** con JWT
+- **Roles de usuario** (usuario/administrador)
+- **Gestión de alojamientos favoritos** por usuario
+- **Perfiles de usuario** personalizables
+
+#### 🔐 Seguridad y Autenticación
+- **JWT tokens** con expiración configurable
+- **Middleware de autenticación** por roles
+- **Validación robusta** de datos de entrada
+- **Hashing seguro** de contraseñas
+
+## 🌐 Despliegue en Producción con Dokploy
+
+### URL de Producción
+**🔗 https://api.la-posada.fqstudio.dev/docs**
+
+### Configuración de Dokploy
+
+El proyecto está configurado para despliegue automático en Dokploy con:
+
+1. **Dockerfile optimizado** para producción
+2. **Variables de entorno** seguras
+3. **SSL/TLS** automático
+
+### Proceso de Despliegue
+
+1. **Construcción de imagen de producción**
    ```bash
-   cd backend/
+   docker build -f Dockerfile -t la-posada-api:latest .
    ```
 
-2. **Ensure your .env file is configured**
-   ```env
-   # Database Configuration
-   DB_HOST=your-database-host
-   DB_PORT=3306
-   DB_NAME=your-database-name
-   DB_USERNAME=your-username
-   DB_PASSWORD=your-password
+2. **Configuración en Dokploy**
+   - Repositorio conectado para CI/CD automático
+   - Variables de entorno configuradas de forma segura
+   - Dominio personalizado con SSL automático
+   - Monitoreo y logs centralizados
 
-   # JWT Configuration
-   JWT_SECRET=your-super-secret-jwt-key
-   JWT_EXPIRATION=3600
-
-   # Application Configuration
-   APP_ENV=development
-   APP_DEBUG=true
+3. **Health Check configurado**
+   ```dockerfile
+   HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+       CMD curl -f http://localhost/docs || exit 1
    ```
 
-3. **Start the API service**
-   ```bash
-   docker-compose up -d
-   ```
+## 📚 Documentación de la API
 
-4. **Access the application**
-   - **API Documentation**: http://localhost:8080/docs
-   - **API Base URL**: http://localhost:8080/api
-   - **Health Check**: http://localhost:8080/api/health
+### Documentación Interactiva
+Visita https://api.la-posada.fqstudio.dev/docs para la documentación completa e interactiva con Swagger UI.
 
-### Production Deployment
-
-1. **Build production image**
-   ```bash
-   docker build -f Dockerfile.prod -t accommodation-api:prod .
-   ```
-
-2. **Run production container**
-   ```bash
-   docker run -d \
-     --name accommodation-api \
-     -p 80:80 \
-     --env-file .env \
-     accommodation-api:prod
-   ```
-
-## 📚 API Documentation
-
-### Interactive Documentation
-Visit http://localhost:8080/docs for the complete interactive API documentation powered by Swagger UI.
-
-### Authentication
-Most endpoints require JWT authentication. Include the token in the Authorization header:
+### Autenticación
+La mayoría de endpoints requieren autenticación JWT. Incluye el token en el header Authorization:
 ```
-Authorization: Bearer <your-jwt-token>
+Authorization: Bearer <tu-jwt-token>
 ```
 
-### Quick Test
-1. Visit http://localhost:8080/docs
-2. Try the `/api/health` endpoint (no auth required)
-3. Register a new user with `/api/auth/register`
-4. Login with `/api/auth/login` to get your JWT token
-5. Click "Authorize" and enter `Bearer YOUR_JWT_TOKEN`
-6. Test the protected endpoints!
+## 🔧 Configuración
 
-## 🛠️ Development
+La aplicación utiliza la configuración de base de datos existente del archivo `.env`. No se requiere configuración adicional de base de datos.
 
-### Local Development (without Docker)
-```bash
-# Install dependencies
-composer install
+### Variables de Entorno
+- `DB_HOST` - Host de la base de datos
+- `DB_PORT` - Puerto de la base de datos (por defecto: 3306)
+- `DB_NAME` - Nombre de la base de datos
+- `DB_USERNAME` - Usuario de la base de datos
+- `DB_PASSWORD` - Contraseña de la base de datos
+- `JWT_SECRET` - Clave secreta para tokens JWT
+- `JWT_EXPIRATION` - Tiempo de expiración del token en segundos
+- `APP_ENV` - Entorno de la aplicación (development/production)
+- `APP_DEBUG` - Habilitar modo debug (true/false)
 
-# Start PHP development server
-php -S localhost:8000
+## 📝 Endpoints de la API
 
-# Access API at http://localhost:8000/api
-# Access docs at http://localhost:8000/docs
-```
+### Autenticación
+- `POST /api/auth/register` - Registrar nuevo usuario
+- `POST /api/auth/login` - Inicio de sesión de usuario
+- `POST /api/auth/refresh` - Refrescar token JWT
+- `POST /api/auth/validate` - Validar token JWT
 
-### Docker Commands
-```bash
-# Build and start
-docker-compose up -d
+### Endpoints Públicos
+- `GET /api/accommodations` - Listar alojamientos (con filtros)
+- `GET /api/accommodations/{id}` - Obtener alojamiento específico
 
-# View logs
-docker-compose logs -f
+### Endpoints de Usuario (Autenticación Requerida)
+- `GET /api/users/accommodations` - Obtener alojamientos del usuario
+- `POST /api/users/accommodations` - Agregar alojamiento a cuenta de usuario
+- `DELETE /api/users/accommodations/{id}` - Remover alojamiento de cuenta de usuario
 
-# Stop services
-docker-compose down
-
-# Rebuild after changes
-docker-compose up -d --build
-```
-
-## 🏗️ Project Structure
-```
-backend/
-├── src/                    # Source code
-│   ├── Authentication/     # Auth controllers, services, middleware
-│   ├── UserManagement/     # User management
-│   ├── AccommodationManagement/ # Accommodation management
-│   └── Shared/            # Shared utilities, database, HTTP
-├── docs/                  # API documentation files
-├── vendor/                # Composer dependencies
-├── .env                   # Environment configuration
-├── index.php              # Main entry point
-├── Dockerfile             # Development Docker image
-├── Dockerfile.prod        # Production Docker image
-└── docker-compose.yml     # Docker Compose configuration
-```
-
-## 🔧 Configuration
-
-The application uses your existing database configuration from the `.env` file. No additional database setup is required.
-
-### Environment Variables
-- `DB_HOST` - Database host
-- `DB_PORT` - Database port (default: 3306)
-- `DB_NAME` - Database name
-- `DB_USERNAME` - Database username
-- `DB_PASSWORD` - Database password
-- `JWT_SECRET` - Secret key for JWT tokens
-- `JWT_EXPIRATION` - Token expiration time in seconds
-- `APP_ENV` - Application environment (development/production)
-- `APP_DEBUG` - Enable debug mode (true/false)
-
-## 🚦 Health Check
-
-The API includes a health check endpoint at `/api/health` that returns:
-```json
-{
-  "message": "Accommodation Management System API is running",
-  "timestamp": "2024-01-15 10:30:00",
-  "version": "1.0.0"
-}
-```
-
-## 📝 API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `POST /api/auth/refresh` - Refresh JWT token
-- `POST /api/auth/validate` - Validate JWT token
-
-### Public Endpoints
-- `GET /api/accommodations` - List accommodations (with filtering)
-- `GET /api/accommodations/{id}` - Get specific accommodation
-
-### User Endpoints (Authentication Required)
-- `GET /api/users/accommodations` - Get user's accommodations
-- `POST /api/users/accommodations` - Add accommodation to user account
-- `DELETE /api/users/accommodations/{id}` - Remove accommodation from user account
-- `GET /api/user/profile` - Get user profile
-
-### Admin Endpoints (Admin Role Required)
-- `POST /api/admin/accommodations` - Create new accommodation
+### Endpoints de Administrador (Rol Admin Requerido)
+- `POST /api/admin/accommodations` - Crear nuevo alojamiento
