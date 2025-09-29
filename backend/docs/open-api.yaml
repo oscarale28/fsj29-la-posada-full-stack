@@ -14,7 +14,7 @@ servers:
     url: 'http://localhost:8000/api'
     description: 'Dev Server'
   -
-    url: 'https://la-posada.fqstudio.dev/api'
+    url: 'https://api.la-posada.fqstudio.dev/api'
     description: 'Production server'
 paths:
   /accommodations:
