@@ -8,7 +8,6 @@ use App\UserManagement\Entities\User;
 use App\UserManagement\Repositories\UserRepository;
 use App\Shared\Enums\UserRole;
 use InvalidArgumentException;
-use RuntimeException;
 
 /**
  * Authentication Service - Handles user login/registration logic

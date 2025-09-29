@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Shared\Database;
+namespace App\Shared\Database;
 
 use PDO;
 use PDOException;
@@ -69,7 +69,7 @@ class DatabaseConnection
         $this->config = [
             'host' => $_ENV['DB_HOST'] ?? 'localhost',
             'port' => $_ENV['DB_PORT'] ?? '3306',
-            'database' => $_ENV['DB_DATABASE'] ?? 'accommodation_management',
+            'database' => $_ENV['DB_NAME'] ?? $_ENV['DB_DATABASE'] ?? 'accommodation_management',
             'username' => $_ENV['DB_USERNAME'] ?? 'root',
             'password' => $_ENV['DB_PASSWORD'] ?? '',
             'charset' => $_ENV['DB_CHARSET'] ?? 'utf8mb4',
@@ -117,7 +117,7 @@ class DatabaseConnection
                 if ($this->connectionAttempts >= self::MAX_CONNECTION_ATTEMPTS) {
                     throw new RuntimeException(
                         "Failed to establish database connection after {$this->connectionAttempts} attempts: " . $e->getMessage(),
-                        $e->getCode(),
+                        is_numeric($e->getCode()) ? (int)$e->getCode() : 0,
                         $e
                     );
                 }
@@ -157,7 +157,7 @@ class DatabaseConnection
         } catch (PDOException $e) {
             throw new RuntimeException(
                 "Database query execution failed: " . $e->getMessage(),
-                $e->getCode(),
+                is_numeric($e->getCode()) ? (int)$e->getCode() : 0,
                 $e
             );
         }

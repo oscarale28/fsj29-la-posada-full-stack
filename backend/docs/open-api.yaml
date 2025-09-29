@@ -1,0 +1,577 @@
+openapi: 3.0.0
+info:
+  title: 'Accommodation Management System API'
+  description: "A comprehensive API for managing accommodations and user accounts.\n\n## Authentication\nMost endpoints require JWT authentication. Include the JWT token in the Authorization header:\n```\nAuthorization: Bearer <your-jwt-token>\n```\n\n## User Roles\n- **User**: Can view accommodations and manage their own accommodation selections\n- **Admin**: Can create accommodations and perform all user operations"
+  contact:
+    name: 'API Support'
+    email: support@accommodations.com
+  license:
+    name: MIT
+    url: 'https://opensource.org/licenses/MIT'
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000/api'
+    description: 'Dev Server'
+  -
+    url: 'https://la-posada.fqstudio.dev/api'
+    description: 'Production server'
+paths:
+  /accommodations:
+    get:
+      tags:
+        - Accommodations
+      summary: 'List all accommodations'
+      description: 'Get a list of all available accommodations with optional filtering'
+      operationId: 1680ca2143dd01a74ac97da1d899aaa7
+      parameters:
+        -
+          name: limit
+          in: query
+          description: 'Maximum number of accommodations to return'
+          schema:
+            type: integer
+            maximum: 100
+            minimum: 1
+            example: 10
+        -
+          name: offset
+          in: query
+          description: 'Number of accommodations to skip'
+          schema:
+            type: integer
+            minimum: 0
+            example: 0
+        -
+          name: location
+          in: query
+          description: 'Filter by location'
+          schema:
+            type: string
+            example: 'New York'
+        -
+          name: min_price
+          in: query
+          description: 'Minimum price filter'
+          schema:
+            type: number
+            format: float
+            minimum: 0
+            example: 50
+        -
+          name: max_price
+          in: query
+          description: 'Maximum price filter'
+          schema:
+            type: number
+            format: float
+            minimum: 0
+            example: 200
+        -
+          name: search
+          in: query
+          description: 'Search in title and description'
+          schema:
+            type: string
+            example: 'luxury hotel'
+        -
+          name: amenity
+          in: query
+          description: 'Filter by amenity'
+          schema:
+            type: string
+            example: wifi
+      responses:
+        '200':
+          description: 'List of accommodations'
+          content:
+            application/json:
+              schema:
+                properties:
+                  accommodations: { type: array, items: { $ref: '#/components/schemas/Accommodation' } }
+                  total: { type: integer, example: 25 }
+                  filters_applied: { properties: { search: { type: string, nullable: true }, location: { type: string, nullable: true }, min_price: { type: number, nullable: true }, max_price: { type: number, nullable: true }, amenity: { type: string, nullable: true }, limit: { type: integer, nullable: true }, offset: { type: integer, nullable: true } }, type: object }
+                type: object
+        '400':
+          description: 'Invalid request parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /admin/accommodations:
+    post:
+      tags:
+        - Admin
+      summary: 'Create new accommodation'
+      description: 'Create a new accommodation (admin only)'
+      operationId: 44eb7656a3bfb23cf366e1eaa620dae5
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - title
+                - description
+                - price
+                - location
+              properties:
+                title:
+                  type: string
+                  maxLength: 255
+                  minLength: 1
+                  example: 'Luxury Downtown Hotel'
+                description:
+                  type: string
+                  minLength: 1
+                  example: 'A beautiful luxury hotel in the heart of downtown'
+                price:
+                  type: number
+                  format: float
+                  minimum: 0
+                  example: 150
+                location:
+                  type: string
+                  maxLength: 255
+                  minLength: 1
+                  example: 'New York, NY'
+                image_url:
+                  type: string
+                  format: uri
+                  example: 'https://example.com/hotel-image.jpg'
+                  nullable: true
+                amenities:
+                  type: array
+                  items: { type: string }
+                  example: [wifi, pool, gym, parking]
+              type: object
+      responses:
+        '201':
+          description: 'Accommodation created successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Accommodation created successfully' }
+                  accommodation: { $ref: '#/components/schemas/Accommodation' }
+                  created_by: { properties: { admin_id: { type: integer, example: 1 }, admin_username: { type: string, example: admin_user } }, type: object }
+                type: object
+        '400':
+          description: 'Invalid accommodation data'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: 'Admin privileges required'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        -
+          bearerAuth: []
+  '/accommodations/{id}':
+    get:
+      tags:
+        - Accommodations
+      summary: 'Get accommodation by ID'
+      description: 'Retrieve a specific accommodation by its ID'
+      operationId: f3e3eb223905e2f7d359dcbffa672a01
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'Accommodation ID'
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: 'Accommodation details'
+          content:
+            application/json:
+              schema:
+                properties:
+                  accommodation: { $ref: '#/components/schemas/Accommodation' }
+                type: object
+        '404':
+          description: 'Accommodation not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: 'User login'
+      description: 'Authenticate user and receive JWT token'
+      operationId: cf4b57474c5b53177699231a8812b808
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: john@example.com
+                password:
+                  type: string
+                  example: SecurePass123
+              type: object
+      responses:
+        '200':
+          description: 'Login successful'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: 'Register a new user'
+      description: 'Create a new user account'
+      operationId: 52c0077c6c079f01b8b46babe0ff20c0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - username
+                - email
+                - password
+              properties:
+                username:
+                  type: string
+                  maxLength: 50
+                  minLength: 3
+                  pattern: '^[a-zA-Z0-9_-]+$'
+                  example: john_doe
+                email:
+                  type: string
+                  format: email
+                  maxLength: 100
+                  example: john@example.com
+                password:
+                  type: string
+                  maxLength: 255
+                  minLength: 8
+                  example: SecurePass123
+                role:
+                  type: string
+                  enum: [user, admin]
+                  example: user
+              type: object
+      responses:
+        '201':
+          description: 'User registered successfully'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: 'Validation error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /auth/refresh:
+    post:
+      tags:
+        - Authentication
+      summary: 'Refresh JWT token'
+      description: 'Get a new JWT token using the current token'
+      operationId: face5942b03e9f39b7fdd108520e18a5
+      responses:
+        '200':
+          description: 'Token refreshed successfully'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: 'Invalid or expired token'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        -
+          bearerAuth: []
+  /auth/validate:
+    post:
+      tags:
+        - Authentication
+      summary: 'Validate JWT token'
+      description: 'Check if the current JWT token is valid'
+      operationId: bc6fc353e66851b197a870a8ea5c40bc
+      responses:
+        '200':
+          description: 'Token is valid'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, example: true }
+                  message: { type: string, example: 'Token is valid' }
+                  user: { $ref: '#/components/schemas/User' }
+                type: object
+        '401':
+          description: 'Invalid or expired token'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        -
+          bearerAuth: []
+  /users/accommodations:
+    get:
+      tags:
+        - 'User Accommodations'
+      summary: "Get user's accommodations"
+      description: 'Retrieve all accommodations associated with the authenticated user'
+      operationId: 25a19148166a631670bf37db18f07cba
+      responses:
+        '200':
+          description: "User's accommodations retrieved successfully"
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, example: true }
+                  message: { type: string, example: 'User accommodations retrieved successfully' }
+                  data: { properties: { user_id: { type: integer, example: 1 }, accommodations: { type: array, items: { $ref: '#/components/schemas/Accommodation' } } }, type: object }
+                type: object
+        '401':
+          description: 'Authentication required'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        -
+          bearerAuth: []
+    post:
+      tags:
+        - 'User Accommodations'
+      summary: 'Add accommodation to user account'
+      description: "Associate an accommodation with the authenticated user's account"
+      operationId: 40f9ff5378859489c91a2f8daf57bf2a
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - accommodation_id
+              properties:
+                accommodation_id:
+                  type: integer
+                  minimum: 1
+                  example: 5
+              type: object
+      responses:
+        '201':
+          description: 'Accommodation added successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, example: true }
+                  message: { type: string, example: 'Accommodation added to user account successfully' }
+                  data: { properties: { user_id: { type: integer, example: 1 }, accommodation_id: { type: integer, example: 5 } }, type: object }
+                type: object
+        '400':
+          description: 'Validation error or accommodation already added'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Authentication required'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        -
+          bearerAuth: []
+  '/users/accommodations/{accommodation_id}':
+    delete:
+      tags:
+        - 'User Accommodations'
+      summary: 'Remove accommodation from user account'
+      description: "Remove the association between an accommodation and the authenticated user's account"
+      operationId: f69542cce9546ed498c69fe47b1b26c2
+      parameters:
+        -
+          name: accommodation_id
+          in: path
+          description: 'ID of the accommodation to remove'
+          required: true
+          schema:
+            type: integer
+            example: 5
+      responses:
+        '200':
+          description: 'Accommodation removed successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  success: { type: boolean, example: true }
+                  message: { type: string, example: 'Accommodation removed from user account successfully' }
+                  data: { properties: { user_id: { type: integer, example: 1 }, accommodation_id: { type: integer, example: 5 } }, type: object }
+                type: object
+        '400':
+          description: "Validation error or accommodation not found in user's list"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: 'Authentication required'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        -
+          bearerAuth: []
+components:
+  schemas:
+    User:
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: john_doe
+        email:
+          type: string
+          format: email
+          example: john@example.com
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+          example: user
+      type: object
+    Accommodation:
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: 'Luxury Downtown Hotel'
+        description:
+          type: string
+          example: 'A beautiful luxury hotel in the heart of downtown'
+        price:
+          type: number
+          format: float
+          example: 150
+        location:
+          type: string
+          example: 'New York, NY'
+        image_url:
+          type: string
+          format: uri
+          example: 'https://example.com/hotel-image.jpg'
+          nullable: true
+        amenities:
+          type: array
+          items:
+            type: string
+          example:
+            - wifi
+            - pool
+            - gym
+            - parking
+        created_at:
+          type: string
+          format: date-time
+          example: '2024-01-15 10:30:00'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2024-01-15 10:30:00'
+      type: object
+    AuthResponse:
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: 'Login successful'
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        user:
+          $ref: '#/components/schemas/User'
+        expires_in:
+          type: integer
+          example: 3600
+      type: object
+    ErrorResponse:
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: VALIDATION_ERROR
+        message:
+          type: string
+          example: 'Validation failed: email - Email is required'
+      type: object
+    SuccessResponse:
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: 'Operation completed successfully'
+        data:
+          type: object
+      type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      description: 'JWT token obtained from login or register endpoint'
+      bearerFormat: JWT
+      scheme: bearer
+tags:
+  -
+    name: Authentication
+    description: 'User authentication and authorization'
+  -
+    name: Accommodations
+    description: 'Public accommodation browsing and search'
+  -
+    name: Admin
+    description: 'Administrative operations (admin role required)'
+  -
+    name: 'User Accommodations'
+    description: 'User accommodation management operations'

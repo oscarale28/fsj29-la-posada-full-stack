@@ -7,7 +7,7 @@ namespace App\UserManagement\Repositories;
 use App\UserManagement\Entities\User;
 use App\UserManagement\Repositories\UserRepositoryInterface;
 use App\Shared\Enums\UserRole;
-use Shared\Database\DatabaseConnection;
+use App\Shared\Database\DatabaseConnection;
 use DateTime;
 use PDO;
 use PDOException;

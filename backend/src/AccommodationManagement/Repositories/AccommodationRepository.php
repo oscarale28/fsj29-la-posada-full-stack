@@ -6,7 +6,7 @@ namespace App\AccommodationManagement\Repositories;
 
 use App\AccommodationManagement\Entities\Accommodation;
 use App\AccommodationManagement\Repositories\AccommodationRepositoryInterface;
-use Shared\Database\DatabaseConnection;
+use App\Shared\Database\DatabaseConnection;
 use DateTime;
 use PDO;
 use PDOException;
@@ -133,10 +133,13 @@ class AccommodationRepository implements AccommodationRepositoryInterface
     {
         try {
             $sql = "SELECT * FROM accommodations 
-                    WHERE title LIKE :search_term OR description LIKE :search_term 
+                    WHERE title LIKE :search_term1 OR description LIKE :search_term2 
                     ORDER BY created_at DESC";
             $searchParam = '%' . $searchTerm . '%';
-            $statement = $this->database->execute($sql, ['search_term' => $searchParam]);
+            $statement = $this->database->execute($sql, [
+                'search_term1' => $searchParam,
+                'search_term2' => $searchParam
+            ]);
             $accommodationsData = $statement->fetchAll(PDO::FETCH_ASSOC);
 
             return array_map([$this, 'mapToEntity'], $accommodationsData);

@@ -1,0 +1,45 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# Node modules (if any)
+node_modules/
+
+# Composer cache
+vendor/
+!vendor
+
+# Test files
+tests/
+phpunit.xml
+
+# Cache
+cache/
+storage/
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
