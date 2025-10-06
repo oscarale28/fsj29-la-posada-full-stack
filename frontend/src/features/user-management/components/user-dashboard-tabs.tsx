@@ -76,8 +76,8 @@ export default function UserDashboardTabs({
             {/* Message Toast */}
             {message && (
                 <div className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-xl animate-in slide-in-from-top-5 ${message.type === 'success'
-                    ? 'bg-green-500 text-white'
-                    : 'bg-red-500 text-white'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-destructive text-destructive-foreground'
                     }`}>
                     <div className="flex items-center gap-2">
                         <span className="text-xl">{message.type === 'success' ? '✓' : '⚠️'}</span>
@@ -87,43 +87,43 @@ export default function UserDashboardTabs({
             )}
 
             {/* Tabs Navigation */}
-            <div className="mb-8 border-b-2 border-gray-200">
+            <div className="mb-8 border-b-2 border-border">
                 <div className="flex gap-1">
                     <button
                         onClick={() => setActiveTab('available')}
                         className={`px-6 py-3 font-semibold text-base transition-all relative ${activeTab === 'available'
-                            ? 'text-orange-600'
-                            : 'text-gray-600 hover:text-orange-500'
+                            ? 'text-primary'
+                            : 'text-muted-foreground hover:text-primary'
                             }`}
                     >
                         <span className="flex items-center gap-2">
                             🏠 Hospedajes Disponibles
                             {' '}
-                            <span className="bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded-full font-bold">
+                            <span className="bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full font-bold border border-primary/20">
                                 {availableToSave.length}
                             </span>
                         </span>
                         {activeTab === 'available' && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600" />
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
                         )}
                     </button>
 
                     <button
                         onClick={() => setActiveTab('saved')}
                         className={`px-6 py-3 font-semibold text-base transition-all relative ${activeTab === 'saved'
-                            ? 'text-blue-600'
-                            : 'text-gray-600 hover:text-blue-500'
+                            ? 'text-secondary'
+                            : 'text-muted-foreground hover:text-secondary'
                             }`}
                     >
                         <span className="flex items-center gap-2">
                             📍 Mis Hospedajes Guardados
                             {' '}
-                            <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-bold">
+                            <span className="bg-secondary/10 text-secondary text-xs px-2 py-0.5 rounded-full font-bold border border-secondary/20">
                                 {userAccommodations.length}
                             </span>
                         </span>
                         {activeTab === 'saved' && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600" />
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary" />
                         )}
                     </button>
                 </div>
@@ -135,22 +135,22 @@ export default function UserDashboardTabs({
                     <div>
                         {/* Header */}
                         <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                            <h2 className="text-2xl font-bold text-foreground mb-2">
                                 Explorá y Guardá Hospedajes
                             </h2>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                                 Descubrí todos los Hospedajes disponibles y guardalos para acceder rápidamente después
                             </p>
                         </div>
 
                         {/* Available Accommodations Grid */}
                         {availableToSave.length === 0 ? (
-                            <div className="text-center py-20 bg-white rounded-2xl shadow-sm">
+                            <div className="text-center py-20 bg-card rounded-2xl shadow-sm border border-border">
                                 <div className="text-8xl mb-6">🏡</div>
-                                <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                                <h3 className="text-2xl font-bold text-card-foreground mb-3">
                                     Todavía no hay Hospedajes disponibles
                                 </h3>
-                                <p className="text-gray-600 mb-8 text-lg">
+                                <p className="text-muted-foreground mb-8 text-lg">
                                     Volvé pronto para ver nuevos hospedajes
                                 </p>
                             </div>
@@ -169,27 +169,27 @@ export default function UserDashboardTabs({
                     <div>
                         {/* Header */}
                         <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                            <h2 className="text-2xl font-bold text-foreground mb-2">
                                 Mis Hospedajes Guardados
                             </h2>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                                 Aquí están todos los Hospedajes que guardaste, {userName}
                             </p>
                         </div>
 
                         {/* User Accommodations Grid */}
                         {userAccommodations.length === 0 ? (
-                            <div className="text-center py-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl shadow-sm border-2 border-blue-200">
+                            <div className="text-center py-16 bg-gradient-to-br from-secondary/10 to-accent/10 rounded-2xl shadow-sm border-2 border-secondary/20">
                                 <div className="text-8xl mb-6">📍</div>
-                                <h3 className="text-xl font-semibold text-gray-800 mb-3">
+                                <h3 className="text-xl font-semibold text-card-foreground mb-3">
                                     No tenés Hospedajes guardados todavía
                                 </h3>
-                                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
                                     Empezá a explorar y guardá los Hospedajes que más te gusten para encontrarlos fácilmente después
                                 </p>
                                 <button
                                     onClick={() => setActiveTab('available')}
-                                    className="inline-block bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-orange-600 hover:to-orange-700 transition-all shadow-lg"
+                                    className="inline-block bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-all shadow-lg"
                                 >
                                     Explorar Hospedajes Disponibles
                                 </button>

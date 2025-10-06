@@ -20,39 +20,39 @@ export default function AdminDashboardTabs({ allAccommodations }: AdminDashboard
     return (
         <div>
             {/* Tabs Navigation */}
-            <div className="mb-8 border-b-2 border-gray-200">
+            <div className="mb-8 border-b-2 border-border">
                 <div className="flex gap-1">
                     <button
                         onClick={() => setActiveTab('view')}
                         className={`px-6 py-3 font-semibold text-base transition-all relative ${activeTab === 'view'
-                            ? 'text-blue-600'
-                            : 'text-gray-600 hover:text-blue-500'
+                            ? 'text-secondary'
+                            : 'text-muted-foreground hover:text-secondary'
                             }`}
                     >
                         <span className="flex items-center gap-2">
                             🏠 Ver Todos los Hospedajes
                             {' '}
-                            <span className="bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-bold">
+                            <span className="bg-secondary/10 text-secondary text-xs px-2 py-0.5 rounded-full font-bold border border-secondary/20">
                                 {allAccommodations.length}
                             </span>
                         </span>
                         {activeTab === 'view' && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 to-blue-600" />
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary" />
                         )}
                     </button>
 
                     <button
                         onClick={() => setActiveTab('add')}
                         className={`px-6 py-3 font-semibold text-base transition-all relative ${activeTab === 'add'
-                            ? 'text-green-600'
-                            : 'text-gray-600 hover:text-green-500'
+                            ? 'text-primary'
+                            : 'text-muted-foreground hover:text-primary'
                             }`}
                     >
                         <span className="flex items-center gap-2">
                             ➕ Agregar Hospedaje
                         </span>
                         {activeTab === 'add' && (
-                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-500 to-green-600" />
+                            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary" />
                         )}
                     </button>
                 </div>
@@ -69,22 +69,22 @@ export default function AdminDashboardTabs({ allAccommodations }: AdminDashboard
                     <div>
                         {/* Header */}
                         <div className="mb-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                            <h2 className="text-2xl font-bold text-foreground mb-2">
                                 Catálogo de Hospedajes
                             </h2>
-                            <p className="text-gray-600">
+                            <p className="text-muted-foreground">
                                 Administrá todos los Hospedajes disponibles en La Posada
                             </p>
                         </div>
 
                         {/* Accommodations Grid */}
                         {filteredAccommodations.length === 0 ? (
-                            <div className="text-center py-20 bg-white rounded-2xl shadow-sm">
+                            <div className="text-center py-20 bg-card rounded-2xl shadow-sm border border-border">
                                 <div className="text-8xl mb-6">🔍</div>
-                                <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                                <h3 className="text-2xl font-bold text-card-foreground mb-3">
                                     No se encontraron Hospedajes
                                 </h3>
-                                <p className="text-gray-600 mb-8 text-lg">
+                                <p className="text-muted-foreground mb-8 text-lg">
                                     {allAccommodations.length === 0
                                         ? 'Todavía no hay Hospedajes en el catálogo. ¡Agregá el primero!'
                                         : 'Intentá cambiar los filtros de búsqueda'}
@@ -92,7 +92,7 @@ export default function AdminDashboardTabs({ allAccommodations }: AdminDashboard
                                 {allAccommodations.length === 0 && (
                                     <button
                                         onClick={() => setActiveTab('add')}
-                                        className="inline-block bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all shadow-lg"
+                                        className="inline-block bg-primary text-primary-foreground px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-all shadow-lg"
                                     >
                                         Agregar Primer Hospedaje
                                     </button>

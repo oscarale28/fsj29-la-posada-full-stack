@@ -48,32 +48,32 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
 
     return (
         <div className="w-full max-w-md mx-auto">
-            <div className="bg-white shadow-2xl rounded-2xl p-8 border-t-4 border-orange-500">
+            <div className="bg-card shadow-2xl rounded-2xl p-8 border-t-4 border-primary">
 
                 {currentState?.error && (
-                    <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                    <div className="mb-6 p-4 bg-destructive/10 border-l-4 border-destructive rounded-r-lg">
                         <div className="flex items-center">
-                            <span className="text-red-500 mr-2">⚠️</span>
-                            <p className="text-red-700 font-medium">{currentState.error}</p>
+                            <span className="text-destructive mr-2">⚠️</span>
+                            <p className="text-destructive font-medium">{currentState.error}</p>
                         </div>
                     </div>
                 )}
 
-                <h1 className="text-2xl font-bold text-gray-900 mb-2 text-center mb-6">
+                <h1 className="text-2xl font-bold text-card-foreground mb-2 text-center mb-6">
                     {isRegisterMode ? 'Crear Cuenta' : 'Iniciar Sesión'}
                 </h1>
 
                 <form action={currentAction} className="space-y-5">
                     {isRegisterMode && (
                         <div>
-                            <label htmlFor="username" className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label htmlFor="username" className="block text-sm font-semibold text-foreground mb-2">
                                 Nombre de Usuario
                             </label>
                             <input
                                 id="username"
                                 name="username"
                                 type="text"
-                                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                                className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all bg-background text-foreground"
                                 placeholder="Ingresá tu usuario"
                                 disabled={isPending}
                                 required
@@ -81,7 +81,7 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                             {currentState?.fieldErrors?.username && (
                                 <div className="mt-2 space-y-1">
                                     {currentState.fieldErrors.username.map((error, index) => (
-                                        <p key={index} className="text-sm text-red-600 flex items-center">
+                                        <p key={index} className="text-sm text-destructive flex items-center">
                                             <span className="mr-1">•</span> {error}
                                         </p>
                                     ))}
@@ -91,14 +91,14 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                     )}
 
                     <div>
-                        <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
                             Correo Electrónico
                         </label>
                         <input
                             id="email"
                             name="email"
                             type="email"
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all bg-background text-foreground"
                             placeholder="tu@email.com"
                             disabled={isPending}
                             required
@@ -106,7 +106,7 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                         {currentState?.fieldErrors?.email && (
                             <div className="mt-2 space-y-1">
                                 {currentState.fieldErrors.email.map((error, index) => (
-                                    <p key={index} className="text-sm text-red-600 flex items-center">
+                                    <p key={index} className="text-sm text-destructive flex items-center">
                                         <span className="mr-1">•</span> {error}
                                     </p>
                                 ))}
@@ -115,14 +115,14 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                     </div>
 
                     <div>
-                        <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label htmlFor="password" className="block text-sm font-semibold text-foreground mb-2">
                             Contraseña
                         </label>
                         <input
                             id="password"
                             name="password"
                             type="password"
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                            className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all bg-background text-foreground"
                             placeholder="••••••••"
                             disabled={isPending}
                             required
@@ -130,7 +130,7 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                         {currentState?.fieldErrors?.password && (
                             <div className="mt-2 space-y-1">
                                 {currentState.fieldErrors.password.map((error, index) => (
-                                    <p key={index} className="text-sm text-red-600 flex items-center">
+                                    <p key={index} className="text-sm text-destructive flex items-center">
                                         <span className="mr-1">•</span> {error}
                                     </p>
                                 ))}
@@ -141,7 +141,7 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                     <button
                         type="submit"
                         disabled={isPending}
-                        className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 px-4 rounded-lg font-bold text-lg hover:from-orange-600 hover:to-orange-700 focus:outline-none focus:ring-4 focus:ring-orange-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        className="w-full bg-primary text-primary-foreground py-3 px-4 rounded-lg font-bold text-lg hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                         {isPending ? (
                             <span className="flex items-center justify-center">
@@ -158,11 +158,11 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                 </form>
 
                 <div className="mt-8 text-center">
-                    <p className="text-gray-600">
+                    <p className="text-muted-foreground">
                         {linkQuestion}{' '}
                         <Link
                             href={linkHref}
-                            className="text-orange-600 hover:text-orange-500 font-semibold hover:underline transition-colors"
+                            className="text-primary hover:text-primary/90 font-semibold hover:underline transition-colors"
                         >
                             {linkText}
                         </Link>
@@ -170,10 +170,10 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                 </div>
 
                 {/* Back to home link */}
-                <div className="mt-6 text-center border-t pt-6">
+                <div className="mt-6 text-center border-t border-border pt-6">
                     <Link
                         href="/"
-                        className="text-gray-500 hover:text-gray-700 text-sm transition-colors inline-flex items-center"
+                        className="text-muted-foreground hover:text-foreground text-sm transition-colors inline-flex items-center"
                     >
                         <span className="mr-1">←</span> Volver al inicio
                     </Link>

@@ -12,32 +12,32 @@ export default function AdminAccommodationForm() {
     );
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl p-8 border-t-4 border-green-500">
+        <div className="bg-card rounded-2xl shadow-xl p-8 border-t-4 border-primary">
             <div className="mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                <h2 className="text-3xl font-bold text-card-foreground mb-2">
                     Agregar Nuevo Hospedaje
                 </h2>
-                <p className="text-gray-600">
+                <p className="text-muted-foreground">
                     Completá el formulario para agregar un nuevo hospedaje al catálogo
                 </p>
             </div>
 
             {state?.success && (
-                <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-r-lg">
+                <div className="mb-6 p-4 bg-primary/10 border-l-4 border-primary rounded-r-lg">
                     <div className="flex items-center">
-                        <span className="text-green-500 mr-2 text-2xl">✓</span>
+                        <span className="text-primary mr-2 text-2xl">✓</span>
                         <div>
-                            <p className="text-green-700 font-medium">{state.message}</p>
+                            <p className="text-primary font-medium">{state.message}</p>
                         </div>
                     </div>
                 </div>
             )}
 
             {state?.error && !state?.fieldErrors && (
-                <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                <div className="mb-6 p-4 bg-destructive/10 border-l-4 border-destructive rounded-r-lg">
                     <div className="flex items-center">
-                        <span className="text-red-500 mr-2">⚠️</span>
-                        <p className="text-red-700 font-medium">{state.error}</p>
+                        <span className="text-destructive mr-2">⚠️</span>
+                        <p className="text-destructive font-medium">{state.error}</p>
                     </div>
                 </div>
             )}
@@ -45,14 +45,14 @@ export default function AdminAccommodationForm() {
             <form action={formAction} className="space-y-6">
                 {/* Title */}
                 <div>
-                    <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="title" className="block text-sm font-semibold text-foreground mb-2">
                         Nombre del Hospedaje *
                     </label>
                     <input
                         id="title"
                         name="title"
                         type="text"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all bg-background text-foreground"
                         placeholder="Ej: Hotel Colonial San Salvador"
                         disabled={isPending}
                         required
@@ -60,7 +60,7 @@ export default function AdminAccommodationForm() {
                     {state?.fieldErrors?.title && (
                         <div className="mt-2">
                             {state.fieldErrors.title.map((error, index) => (
-                                <p key={index} className="text-sm text-red-600 flex items-center">
+                                <p key={index} className="text-sm text-destructive flex items-center">
                                     <span className="mr-1">•</span> {error}
                                 </p>
                             ))}
@@ -70,14 +70,14 @@ export default function AdminAccommodationForm() {
 
                 {/* Description */}
                 <div>
-                    <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="description" className="block text-sm font-semibold text-foreground mb-2">
                         Descripción *
                     </label>
                     <textarea
                         id="description"
                         name="description"
                         rows={4}
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all resize-none"
+                        className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all resize-none bg-background text-foreground"
                         placeholder="Describe el hospedaje, sus características principales y lo que lo hace especial..."
                         disabled={isPending}
                         required
@@ -85,7 +85,7 @@ export default function AdminAccommodationForm() {
                     {state?.fieldErrors?.description && (
                         <div className="mt-2">
                             {state.fieldErrors.description.map((error, index) => (
-                                <p key={index} className="text-sm text-red-600 flex items-center">
+                                <p key={index} className="text-sm text-destructive flex items-center">
                                     <span className="mr-1">•</span> {error}
                                 </p>
                             ))}
@@ -97,7 +97,7 @@ export default function AdminAccommodationForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Price */}
                     <div>
-                        <label htmlFor="price" className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label htmlFor="price" className="block text-sm font-semibold text-foreground mb-2">
                             Precio por Noche (USD) *
                         </label>
                         <input
@@ -106,7 +106,7 @@ export default function AdminAccommodationForm() {
                             type="number"
                             step="0.01"
                             min="0"
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                            className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all bg-background text-foreground"
                             placeholder="50.00"
                             disabled={isPending}
                             required
@@ -114,7 +114,7 @@ export default function AdminAccommodationForm() {
                         {state?.fieldErrors?.price && (
                             <div className="mt-2">
                                 {state.fieldErrors.price.map((error, index) => (
-                                    <p key={index} className="text-sm text-red-600 flex items-center">
+                                    <p key={index} className="text-sm text-destructive flex items-center">
                                         <span className="mr-1">•</span> {error}
                                     </p>
                                 ))}
@@ -124,14 +124,14 @@ export default function AdminAccommodationForm() {
 
                     {/* Location */}
                     <div>
-                        <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label htmlFor="location" className="block text-sm font-semibold text-foreground mb-2">
                             Ubicación *
                         </label>
                         <input
                             id="location"
                             name="location"
                             type="text"
-                            className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                            className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all bg-background text-foreground"
                             placeholder="San Salvador, El Salvador"
                             disabled={isPending}
                             required
@@ -139,7 +139,7 @@ export default function AdminAccommodationForm() {
                         {state?.fieldErrors?.location && (
                             <div className="mt-2">
                                 {state.fieldErrors.location.map((error, index) => (
-                                    <p key={index} className="text-sm text-red-600 flex items-center">
+                                    <p key={index} className="text-sm text-destructive flex items-center">
                                         <span className="mr-1">•</span> {error}
                                     </p>
                                 ))}
@@ -150,34 +150,34 @@ export default function AdminAccommodationForm() {
 
                 {/* Image URL */}
                 <div>
-                    <label htmlFor="imageUrl" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="imageUrl" className="block text-sm font-semibold text-foreground mb-2">
                         URL de Imagen
                     </label>
                     <input
                         id="imageUrl"
                         name="imageUrl"
                         type="url"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all bg-background text-foreground"
                         placeholder="https://ejemplo.com/imagen.jpg"
                         disabled={isPending}
                     />
-                    <p className="text-sm text-gray-500 mt-1">Opcional: URL de la imagen principal del hospedaje</p>
+                    <p className="text-sm text-muted-foreground mt-1">Opcional: URL de la imagen principal del hospedaje</p>
                 </div>
 
                 {/* Amenities */}
                 <div>
-                    <label htmlFor="amenities" className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="amenities" className="block text-sm font-semibold text-foreground mb-2">
                         Comodidades
                     </label>
                     <input
                         id="amenities"
                         name="amenities"
                         type="text"
-                        className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 border-2 border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all bg-background text-foreground"
                         placeholder="wifi, piscina, estacionamiento, aire acondicionado"
                         disabled={isPending}
                     />
-                    <p className="text-sm text-gray-500 mt-1">Separadas por comas</p>
+                    <p className="text-sm text-muted-foreground mt-1">Separadas por comas</p>
                 </div>
 
                 {/* Submit Buttons */}
@@ -185,7 +185,7 @@ export default function AdminAccommodationForm() {
                     <button
                         type="submit"
                         disabled={isPending}
-                        className="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-bold text-lg hover:from-green-600 hover:to-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
+                        className="flex-1 bg-primary text-primary-foreground py-3 px-6 rounded-lg font-bold text-lg hover:bg-primary/90 focus:outline-none focus:ring-4 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
                     >
                         {isPending ? (
                             <span className="flex items-center justify-center">
@@ -204,7 +204,7 @@ export default function AdminAccommodationForm() {
                         type="button"
                         onClick={() => router.push('/')}
                         disabled={isPending}
-                        className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+                        className="px-6 py-3 border-2 border-border text-foreground rounded-lg font-semibold hover:bg-muted/50 transition-colors disabled:opacity-50"
                     >
                         Cancelar
                     </button>
