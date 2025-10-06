@@ -1,7 +1,5 @@
 // JWT token management utilities placeholder
-import jwt from 'jsonwebtoken';
-import Cookies from 'js-cookie';
-
 export class TokenManager {
     // Token management implementation
+    // TODO: Implement JWT token management with jsonwebtoken and js-cookie
 }
