@@ -35,7 +35,8 @@ jobs:
         with:
           context: ./backend
           file: ./backend/Dockerfile
-           tags: |
+          push: true
+          tags: |
             ghcr.io/${{github.repository}}/api:latest
             ghcr.io/${{github.repository}}/api:${{ github.sha }}
             ghcr.io/${{github.repository}}/api:${{ github.ref_name }}
