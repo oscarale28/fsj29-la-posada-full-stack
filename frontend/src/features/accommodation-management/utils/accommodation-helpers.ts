@@ -6,7 +6,7 @@
  * Ensure amenities is always an array
  * Handles cases where amenities might be a JSON string or already an array
  */
-export function normalizeAmenities(amenities: any): string[] {
+export function normalizeAmenities(amenities: unknown): string[] {
     // If it's already an array, return it
     if (Array.isArray(amenities)) {
         return amenities;
@@ -30,7 +30,7 @@ export function normalizeAmenities(amenities: any): string[] {
 /**
  * Check if accommodation has amenities
  */
-export function hasAmenities(amenities: any): boolean {
+export function hasAmenities(amenities: unknown): boolean {
     const normalized = normalizeAmenities(amenities);
     return normalized.length > 0;
 }

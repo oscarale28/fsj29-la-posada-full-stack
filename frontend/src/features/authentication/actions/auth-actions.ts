@@ -43,7 +43,12 @@ export async function loginAction(prevState: ActionResult | null, formData: Form
         }
 
         // Make API call to backend
-        const response = await apiClient.post<any>('/auth/login', validationResult.data);
+        const response = await apiClient.post<{
+            success: boolean;
+            token?: string;
+            user?: { id: string; username: string; email: string; role: 'admin' | 'user' };
+            message?: string;
+        }>('/auth/login', validationResult.data);
 
         console.log(`loginAction response`, response);
 
@@ -77,10 +82,11 @@ export async function loginAction(prevState: ActionResult | null, formData: Form
         }
 
         return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Login failed. Please try again.';
         return {
             success: false,
-            error: error.message || 'Login failed. Please try again.',
+            error: errorMessage,
         };
     }
 }
@@ -112,7 +118,12 @@ export async function registerAction(prevState: ActionResult | null, formData: F
         }
 
         // Make API call to backend
-        const response = await apiClient.post<any>('/auth/register', validationResult.data);
+        const response = await apiClient.post<{
+            success: boolean;
+            token?: string;
+            user?: { id: string; username: string; email: string; role: 'admin' | 'user' };
+            message?: string;
+        }>('/auth/register', validationResult.data);
 
         console.log(`registerAction response`, response);
 
@@ -146,10 +157,11 @@ export async function registerAction(prevState: ActionResult | null, formData: F
         }
 
         return { success: true };
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Registration failed. Please try again.';
         return {
             success: false,
-            error: error.message || 'Registration failed. Please try again.',
+            error: errorMessage,
         };
     }
 }

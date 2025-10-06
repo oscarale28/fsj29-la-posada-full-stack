@@ -1,8 +1,8 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import Link from 'next/link';
 import { loginAction, registerAction, ActionResult } from '../actions/auth-actions';
 
 interface ServerAuthFormProps {
@@ -38,7 +38,7 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                 router.push('/dashboard');
             }
         }
-    }, [currentState?.success, currentState?.user, router]);
+    }, [currentState, router]);
 
     const submitButtonText = isRegisterMode ? 'Crear Cuenta' : 'Entrar';
     const loadingText = isRegisterMode ? 'Creando cuenta...' : 'Entrando...';
@@ -160,23 +160,23 @@ export default function ServerAuthForm({ mode }: ServerAuthFormProps) {
                 <div className="mt-8 text-center">
                     <p className="text-gray-600">
                         {linkQuestion}{' '}
-                        <a
+                        <Link
                             href={linkHref}
                             className="text-orange-600 hover:text-orange-500 font-semibold hover:underline transition-colors"
                         >
                             {linkText}
-                        </a>
+                        </Link>
                     </p>
                 </div>
 
                 {/* Back to home link */}
                 <div className="mt-6 text-center border-t pt-6">
-                    <a
+                    <Link
                         href="/"
                         className="text-gray-500 hover:text-gray-700 text-sm transition-colors inline-flex items-center"
                     >
                         <span className="mr-1">←</span> Volver al inicio
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

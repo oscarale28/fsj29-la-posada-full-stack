@@ -2,11 +2,12 @@
 
 import { useState, useTransition } from 'react';
 import AccommodationGrid from '@/features/accommodation-management/components/accommodation-grid';
+import { Accommodation } from '@/features/accommodation-management/types';
 import { addAccommodationToUserAction, removeAccommodationFromUserAction } from '../actions/user-actions';
 
 interface UserDashboardTabsProps {
-    readonly userAccommodations: any[];
-    readonly availableAccommodations: any[];
+    readonly userAccommodations: Accommodation[];
+    readonly availableAccommodations: Accommodation[];
     readonly userName: string;
 }
 

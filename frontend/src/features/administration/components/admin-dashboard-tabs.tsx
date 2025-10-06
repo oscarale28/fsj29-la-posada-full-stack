@@ -3,32 +3,19 @@
 import { useState } from 'react';
 import AdminAccommodationForm from './admin-accommodation-form';
 import AccommodationGrid from '@/features/accommodation-management/components/accommodation-grid';
+import { Accommodation } from '@/features/accommodation-management/types';
 
 interface AdminDashboardTabsProps {
-    readonly allAccommodations: any[];
+    readonly allAccommodations: Accommodation[];
 }
 
 type TabType = 'add' | 'view';
 
 export default function AdminDashboardTabs({ allAccommodations }: AdminDashboardTabsProps) {
     const [activeTab, setActiveTab] = useState<TabType>('view');
-    const [searchTerm, setSearchTerm] = useState('');
-    const [locationFilter, setLocationFilter] = useState('');
 
-    // Filter accommodations based on search and location
-    const filteredAccommodations = allAccommodations.filter(acc => {
-        const matchesSearch = searchTerm === '' ||
-            acc.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            acc.description?.toLowerCase().includes(searchTerm.toLowerCase());
-
-        const matchesLocation = locationFilter === '' ||
-            acc.location?.toLowerCase().includes(locationFilter.toLowerCase());
-
-        return matchesSearch && matchesLocation;
-    });
-
-    // Get unique locations for filter dropdown
-    const uniqueLocations = Array.from(new Set(allAccommodations.map(acc => acc.location).filter(Boolean)));
+    // For now, we're showing all accommodations. Search/filter functionality can be added later if needed.
+    const filteredAccommodations = allAccommodations;
 
     return (
         <div>
